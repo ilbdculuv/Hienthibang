@@ -84,8 +84,8 @@ public class Model_khoanthu {
     }
     
     @Override
-    public String toString() {
-        return mota;
-    }
+   public String toString() {
+    return String.valueOf(makhoanthu); // Hoặc có thể thêm thông tin chi tiết hơn
+}
 
 }

@@ -340,22 +340,40 @@ public class Main extends javax.swing.JFrame {
             };
              String actions[] = new String[]{"Cancel", "Update"};
              GlassPanePopup.showPopup(new SimplePopupBorder(create, "Chỉnh sửa khoản thu ["+data.getTenkhoanthu()+"]", actions, (pc, i) ->{
-                if(i == 1){
-                    //edit
-                try{
+             if (i == 1) { // If the user clicks "Update"
+                try {
+                    // Get the edited data from the 'Create' dialog
                     Model_khoanthu dataEdit = create.getData();
+
+                    // Set the original primary key for the edited data (to identify which record to update)
                     dataEdit.setMakhoanthu(data.getMakhoanthu());
+
+                    // Stop any ongoing cell editing before performing the update
+                    if (table.isEditing()) {
+                        table.getCellEditor().stopCellEditing();
+                    }
+
+                    // Perform the edit operation
                     service.edit(dataEdit);
+
+                    // Close the popup
                     pc.closePopup();
+
+                    // Show a success notification
                     Notifications.getInstance().show(Notifications.Type.SUCCESS, "Khoản thu mới đã được cập nhật");
-                } catch (Exception e){
+
+                    // Refresh the table data after the update
+                    loadData(); // This will reload the data from the database and update the table
+
+                } catch (Exception e) {
+                    // In case of error, print the stack trace for debugging
                     e.printStackTrace();
                 }
-                 }
+            } else {
+                // If the user cancels, just close the popup without making any changes
+                pc.closePopup();
+}
 
-                else{
-                   pc.closePopup();
-                }
              }),option);
             }else{
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Hãy chọn duy nhất một khoản thu!");

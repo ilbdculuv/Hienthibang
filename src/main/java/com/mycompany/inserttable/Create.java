@@ -227,10 +227,11 @@ public class Create extends javax.swing.JPanel {
                     int rowsInserted = p.executeUpdate(); // Thực hiện thêm vào cơ sở dữ liệu
 
                     if (rowsInserted > 0) {
-                        System.out.println("Đã thêm loại khoản thu: " + model.getTenKhoanThuName() + " vào cơ sở dữ liệu.");
+                        JOptionPane.showMessageDialog(this, "Đã thêm loại khoản thu: " + model.getTenKhoanThuName() + " vào cơ sở dữ liệu.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        System.out.println("Không thể thêm loại khoản thu: " + model.getTenKhoanThuName());
+                        JOptionPane.showMessageDialog(this, "Không thể thêm loại khoản thu: " + model.getTenKhoanThuName(), "Thông báo", JOptionPane.WARNING_MESSAGE);
                     }
+
                 } catch (SQLException ex) {
                     ex.printStackTrace(); // Hiển thị thông báo lỗi hoặc ghi log lỗi
                     JOptionPane.showMessageDialog(null, "Lỗi khi thêm loại khoản thu vào cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
