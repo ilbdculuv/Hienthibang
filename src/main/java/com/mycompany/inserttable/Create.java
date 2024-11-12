@@ -3,6 +3,7 @@ package com.mycompany.inserttable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,10 @@ public class Create extends javax.swing.JPanel {
     public Create() {
         initComponents();
         jComboBox1.setEditable(true);
-        
+        datePicker.setCloseAfterSelected(true);
+        datePicker1.setCloseAfterSelected(true);
+        datePicker.setEditor(txtNgaybatdauthu);
+        datePicker1.setEditor(txtNgayketthuc);
     }
     //Sua pthuc loaddata
     public void loadData(Service_khoanthu service, Model_khoanthu data){
@@ -32,6 +36,7 @@ public class Create extends javax.swing.JPanel {
             }
         }catch(SQLException e){
             e.printStackTrace();
+            System.out.println("Lỗi dòng 38");
     }
         if(data != null){
             //khac mau video
@@ -56,19 +61,21 @@ public class Create extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        datePicker = new raven.datetime.component.date.DatePicker();
+        datePicker1 = new raven.datetime.component.date.DatePicker();
         jLabel1 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtSotienthu = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtNgaybatdauthu = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtNgayketthuc = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtMota = new javax.swing.JTextArea();
+        txtNgaybatdauthu = new javax.swing.JFormattedTextField();
+        txtNgayketthuc = new javax.swing.JFormattedTextField();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Mã khoản thu");
@@ -100,6 +107,12 @@ public class Create extends javax.swing.JPanel {
         txtMota.setRows(5);
         jScrollPane1.setViewportView(txtMota);
 
+        txtNgaybatdauthu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNgaybatdauthuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,12 +129,12 @@ public class Create extends javax.swing.JPanel {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNgayketthuc)
-                    .addComponent(txtNgaybatdauthu)
                     .addComponent(txtSotienthu)
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtName)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addComponent(txtNgaybatdauthu)
+                    .addComponent(txtNgayketthuc))
                 .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
@@ -141,13 +154,13 @@ public class Create extends javax.swing.JPanel {
                     .addComponent(txtSotienthu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNgaybatdauthu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNgaybatdauthu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,19 +168,34 @@ public class Create extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     public Model_khoanthu getData(){
-        Model_loaikhoanthu tenkhoanthu = (Model_loaikhoanthu) jComboBox1.getSelectedItem();
+        Object selectedItem = jComboBox1.getSelectedItem();
+    Model_loaikhoanthu tenkhoanthu = null;
+
+    // Kiểm tra nếu đối tượng là Model_loaikhoanthu
+    if (selectedItem instanceof Model_loaikhoanthu) {
+        tenkhoanthu = (Model_loaikhoanthu) selectedItem;
+    } else if (selectedItem instanceof String) {
+        // Tìm kiếm trong cơ sở dữ liệu nếu đối tượng là String
+        String tenKhoanThuStr = (String) selectedItem;
+        tenkhoanthu = searchLoaiKhoanThuFromDatabase(tenKhoanThuStr);
+        
+        if (tenkhoanthu == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy loại khoản thu trong cơ sở dữ liệu!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return null; // Không tìm thấy loại khoản thu phù hợp
+        }
+    }
         int sotienthu = 0;
         if (!txtSotienthu.getText().trim().isEmpty()) {
             sotienthu = Integer.parseInt(txtSotienthu.getText().trim().replace(",", ""));
         }
-
+        Date sqlDate = Date.valueOf("1990-01-01");
         Date ngaybatdauthu = null;
         Date ngaykethuc = null;
         if (!txtNgaybatdauthu.getText().trim().isEmpty()) {
-            ngaybatdauthu = Date.valueOf(txtNgaybatdauthu.getText().trim());
+            ngaybatdauthu = datePicker.isDateSelected()?Date.valueOf(datePicker.getSelectedDate()):sqlDate;
         }
         if (!txtNgayketthuc.getText().trim().isEmpty()) {
-            ngaykethuc = Date.valueOf(txtNgayketthuc.getText().trim());
+            ngaykethuc = datePicker1.isDateSelected()?Date.valueOf(datePicker1.getSelectedDate()):sqlDate;
         }
 
         String mota = txtMota.getText().trim();
@@ -197,6 +225,36 @@ public class Create extends javax.swing.JPanel {
                     }
                 }
     }//GEN-LAST:event_jComboBox1ActionPerformed
+private Model_loaikhoanthu searchLoaiKhoanThuFromDatabase(String tenKhoanThu) {
+    Connection con = null;
+    PreparedStatement p = null;
+    ResultSet rs = null;
+    try {
+        con = DatabaseConnection.getInstance().createConnection();
+        String query = "SELECT * FROM `loại khoản thu` WHERE `tenkhoanthu_name` = ?";
+        p = con.prepareStatement(query);
+        p.setString(1, tenKhoanThu);
+        rs = p.executeQuery();
+
+        if (rs.next()) {
+            // Giả sử Model_loaikhoanthu có constructor nhận id và name
+            return new Model_loaikhoanthu(rs.getInt("tenkhoanthu_id"), rs.getString("tenkhoanthu_name"));
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Lỗi khi truy vấn cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            DatabaseConnection.getInstance().close(rs, p, con);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    return null; // Không tìm thấy loại khoản thu
+}
+    private void txtNgaybatdauthuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNgaybatdauthuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNgaybatdauthuActionPerformed
     private boolean newEntryExistsInComboBox(JComboBox cb, String entry) {
                 for (int i = 0; i < cb.getItemCount(); i++) {
                     Object item = cb.getItemAt(i);
@@ -234,6 +292,7 @@ public class Create extends javax.swing.JPanel {
 
                 } catch (SQLException ex) {
                     ex.printStackTrace(); // Hiển thị thông báo lỗi hoặc ghi log lỗi
+                    System.out.println("Lỗi dòng 252");
                     JOptionPane.showMessageDialog(null, "Lỗi khi thêm loại khoản thu vào cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     try {
@@ -246,6 +305,8 @@ public class Create extends javax.swing.JPanel {
             }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private raven.datetime.component.date.DatePicker datePicker;
+    private raven.datetime.component.date.DatePicker datePicker1;
     private javax.swing.JComboBox<Object> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -256,8 +317,8 @@ public class Create extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtMota;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtNgaybatdauthu;
-    private javax.swing.JTextField txtNgayketthuc;
+    private javax.swing.JFormattedTextField txtNgaybatdauthu;
+    private javax.swing.JFormattedTextField txtNgayketthuc;
     private javax.swing.JFormattedTextField txtSotienthu;
     // End of variables declaration//GEN-END:variables
 }
