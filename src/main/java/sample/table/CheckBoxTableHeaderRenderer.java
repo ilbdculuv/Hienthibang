@@ -1,4 +1,4 @@
-package sample.table;
+ package sample.table;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;

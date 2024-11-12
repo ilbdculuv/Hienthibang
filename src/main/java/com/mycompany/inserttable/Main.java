@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.inserttable;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -71,7 +67,7 @@ public class Main extends javax.swing.JFrame {
         
         ibTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:bold +5;");
-        txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
+        txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search ...");
         //txtSearch.putClientProperty(FlatClientProperties. TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("sample/icon/search.svg"));
         txtSearch.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc: 15;"

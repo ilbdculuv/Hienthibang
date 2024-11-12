@@ -4,6 +4,13 @@
  */
 package com.mycompany.inserttable;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Font;
+import javax.swing.UIManager;
+import raven.popup.GlassPanePopup;
+
 /**
  *
  * @author Admin
@@ -14,7 +21,9 @@ public class test extends javax.swing.JFrame {
      * Creates new form test
      */
     public test() {
+        GlassPanePopup.install(this);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -35,16 +44,14 @@ public class test extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(insertTablePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(insertTablePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         pack();
@@ -77,6 +84,11 @@ public class test extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+     
+        FlatRobotoFont.install();
+        FlatLaf.registerCustomDefaultsSource("sample.themes");
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        FlatMacLightLaf.setup();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
